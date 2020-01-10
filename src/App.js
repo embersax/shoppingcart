@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'rbx/index.css';
-import {Card,Column,Image,Content,Level} from 'rbx';
+import {Card,Column,Image,Content,Level,Divider,Button} from 'rbx';
 
 
 const Cards=({product})=>{
@@ -14,10 +14,22 @@ const Cards=({product})=>{
         <Card.Content>
           <Content>
             {product.title}
-            {product.price}
+            <Divider>
+                {product.price+'$'}
+            </Divider>
+              <Divider>
+                  {product.description}
+              </Divider>
+
 
           </Content>
+
         </Card.Content>
+          <Button.Group>
+              {['S','M','L','XL'].map(size=><Button>
+                  {size}
+              </Button>)}
+          </Button.Group>
       </Card>
   )
 }

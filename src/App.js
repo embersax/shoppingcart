@@ -3,8 +3,10 @@ import 'rbx/index.css';
 import {Card,Column,Image,Content,Level,Divider,Button,Navbar,Media,Title} from 'rbx';
 import Sidebar from "react-sidebar";
 
-const Cards=({product})=>{
-    const [cartContents, setCartContents] = useCart();
+const Cards=({product,state})=>{
+  var setShowShoppingcart=Object.values(state)[1];
+  var cartItems=Object.values(state)[2];
+  var setCartItems=Object.values(state)[3];
   return(
       <Card key={product.sku}>
         <Card.Image>
@@ -28,7 +30,14 @@ const Cards=({product})=>{
         </Card.Content>
           <Button.Group>
               {['S','M','L','XL'].map(size=>
-                  <Button onClick={() => setCartContents(cartContents, product)}>{size}</Button>)}
+                  <Button onClick={() => {
+                  setShowShoppingcart(true);
+                  cartItems.push(product);
+                  setCartItems(cartItems);
+                  }
+                  }>
+
+                      {size}</Button>)}
           </Button.Group>
           <Button >
               Add to Cart
@@ -66,22 +75,13 @@ const CartCard = ({ item }) => {
 };
 
 
-const useCart = () => {
-    const [cartContents, setCartContents] = useState([]);
-    const updateCart = (cart, item) => {
-        cart.push(item);
-        setCartContents(cart);
-    }
-    return [cartContents, updateCart];
-}
 
 
 
 const App = () => {
   const [data, setData] = useState({});
   const products = Object.values(data);
-  const [showShoppingCart,setShowShoppingcart]=useState(false);
-  const [cartItems,setCartItems]=useCart();
+
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch('./data/products.json');
@@ -90,7 +90,8 @@ const App = () => {
     };
     fetchProducts();
   }, []);
-
+    const [showShoppingCart,setShowShoppingcart]=useState(false);
+    const [cartItems,setCartItems]=useState([]);
   return (
       <React.Fragment>
           <Navbar>
@@ -111,7 +112,7 @@ const App = () => {
           <Sidebar open={showShoppingCart} pullRight={true} styles={{ sidebar: { background: "black" } }}
           sidebar={cartItems.map(cartItem =>(
               <Level>
-                  <CartCard items={cartItem}/>
+                  <CartCard item={cartItem}/>
               </Level>
           ))}/>
 
@@ -120,7 +121,7 @@ const App = () => {
                   <Column key={i}>
                       {products.slice(4*(i-1),4*i).map(product=>
                           <Level style={{display:"flex"}}>
-                              <Cards product={product} />
+                              <Cards state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems}} product={product} />
                           </Level>
                       )}
                   </Column>

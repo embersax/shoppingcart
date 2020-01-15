@@ -2,78 +2,77 @@ import React, { useEffect, useState } from 'react';
 import 'rbx/index.css';
 import {Card,Column,Image,Content,Level,Divider,Button,Navbar,Media,Title} from 'rbx';
 import Sidebar from "react-sidebar";
+import CartCard from './Components/CartCard'
+import Cards from './Components/Cards'
+// const Cards=({product,state})=>{
+//   var setShowShoppingcart=Object.values(state)[1];
+//   var cartItems=Object.values(state)[2];
+//   var setCartItems=Object.values(state)[3];
+//   return(
+//       <Card key={product.sku}>
+//         <Card.Image>
+//           <Image.Container >
+//             <Image src={require('../public/data/products/'+product.sku+'_1.jpg')} />
+//           </Image.Container>
+//         </Card.Image>
+//         <Card.Content>
+//           <Content>
+//             {product.title}
+//             <Divider>
+//                 {product.price+'$'}
+//             </Divider>
+//               <Divider>
+//                   {product.description}
+//               </Divider>
+//
+//
+//           </Content>
+//
+//         </Card.Content>
+//           <Button.Group>
+//               {['S','M','L','XL'].map(size=>
+//                   <Button onClick={() => {
+//                   setShowShoppingcart(true);
+//                   cartItems.push(product);
+//                   setCartItems(cartItems);
+//                   console.log(cartItems)
+//                   }
+//                   }>
+//
+//                       {size}</Button>)}
+//           </Button.Group>
+//       </Card>
+//   )
+// }
 
-const Cards=({product,state})=>{
-  var setShowShoppingcart=Object.values(state)[1];
-  var cartItems=Object.values(state)[2];
-  var setCartItems=Object.values(state)[3];
-  return(
-      <Card key={product.sku}>
-        <Card.Image>
-          <Image.Container >
-            <Image src={require('../public/data/products/'+product.sku+'_1.jpg')} />
-          </Image.Container>
-        </Card.Image>
-        <Card.Content>
-          <Content>
-            {product.title}
-            <Divider>
-                {product.price+'$'}
-            </Divider>
-              <Divider>
-                  {product.description}
-              </Divider>
-
-
-          </Content>
-
-        </Card.Content>
-          <Button.Group>
-              {['S','M','L','XL'].map(size=>
-                  <Button onClick={() => {
-                  setShowShoppingcart(true);
-                  cartItems.push(product);
-                  setCartItems(cartItems);
-                  }
-                  }>
-
-                      {size}</Button>)}
-          </Button.Group>
-          <Button >
-              Add to Cart
-          </Button>
-      </Card>
-  )
-}
-
-const CartCard = ({ item }) => {
-    console.log("made a cartCard!!");
-
-    return (
-        <Card>
-            <Card.Content>
-                <Media>
-                    <Media.Item as="figure" align="left">
-                        <Image.Container as="p" size={64}>
-                            <Image
-                                src={require('../public/data/products/'+item.sku+'_2.jpg')}
-                            />
-                        </Image.Container>
-                    </Media.Item>
-                    <Media.Item>
-                        <Title as="p" size={4}>
-                            {item.title}
-                        </Title>
-                        <Title as="p" subtitle size={6}>
-                            {item.price}
-                        </Title>
-                    </Media.Item>
-                </Media>
-            </Card.Content>
-        </Card>
-    );
-};
-
+// const cartCard = ({ item }) => {
+//     console.log("made a cartCard!!");
+//
+//     return (
+//         <Card>
+//             <Card.Content>
+//                 <Media>
+//                     <Media.Item as="figure" align="left">
+//                         <Image.Container as="p" size={64}>
+//                             <Image
+//                                 // alt="64*64"
+//                                 src={require('../../public/data/products/'+item.sku+'_2.jpg')}
+//                             />
+//                         </Image.Container>
+//                     </Media.Item>
+//                     <Media.Item>
+//                         <Title as="p" size={4}>
+//                             {item.title}
+//                         </Title>
+//                         <Title as="p" subtitle size={6}>
+//                             {item.price}
+//                         </Title>
+//                     </Media.Item>
+//                 </Media>
+//             </Card.Content>
+//         </Card>
+//     );
+// };
 //test github
 
 

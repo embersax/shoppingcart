@@ -31,11 +31,16 @@ const Cards=({product,state})=>{
                 {['S','M','L','XL'].map(size=>
                     <Button onClick={() => {
                         setShowShoppingcart(true);
-                        cartItems.push(product);
+                        let index=cartItems.findIndex((item)=>{return item.product === product && item.size === size});
+                        if (index !==-1){
+                            cartItems[index].count++;
+                        }else{
+                            cartItems.push({product: product,size:size,count:1});
+                        }
+
                         setCartItems(cartItems);
-                        console.log(cartItems)
-                    }
-                    }>
+
+                    }}>
 
                         {size}</Button>)}
             </Button.Group>

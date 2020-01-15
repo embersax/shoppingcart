@@ -111,7 +111,7 @@ const App = () => {
           <Sidebar open={showShoppingCart} pullRight={true} styles={{ sidebar: { background: "black" } }}
           sidebar={cartItems.map(cartItem =>(
               <Level>
-                  <CartCard item={cartItem}/>
+                  <CartCard product={cartItem.product} size={cartItem.size} count={cartItem.count} state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems}}/>
               </Level>
           ))}/>
 

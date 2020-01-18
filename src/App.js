@@ -123,9 +123,9 @@ const App = () => {
               </Navbar.Menu>
           </Navbar>
           <Sidebar open={showShoppingCart} pullRight={true} styles={{ sidebar: { background: "black" } }}
-          sidebar={cartItems.map(cartItem =>(
+          sidebar={cartItems.map((cartItem,index) =>(
               <Level>
-                  <CartCard product={cartItem.product} size={cartItem.size} count={cartItem.count} state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems}}/>
+                  <CartCard key={index} product={cartItem.product} size={cartItem.size} count={cartItem.count} state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems,stock:dataInstock,setDataInstock:setDataInstock}}/>
               </Level>
           ))}/>
 

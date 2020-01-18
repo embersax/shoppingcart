@@ -8,6 +8,8 @@ const CartCard = ({ product,size,count,state}) => {
     var setShowShoppingcart=Object.values(state)[1];
     var cartItems=Object.values(state)[2];
     var setCartItems=Object.values(state)[3];
+    var stock=state.stock;
+    var setStock=state.setDataInstock;
     return (
         <Card>
             <Card.Content>
@@ -29,6 +31,18 @@ const CartCard = ({ product,size,count,state}) => {
                         </Title>
                     </Media.Item>
                 </Media>
+                <Button onClick={() => {
+
+                    let index=cartItems.findIndex((item)=>{return item.product === product && item.size === size});
+                    let newStock=stock;
+                    cartItems[index].count++;
+                    newStock[product.sku][size]--;
+                    setStock(newStock);
+
+
+                    setCartItems(cartItems.filter((cartItem) => {return cartItem.count>0}));}}>
+                    +
+                </Button>
                 <Button onClick={() => {
 
                     let index=cartItems.findIndex((item)=>{return item.product === product && item.size === size});

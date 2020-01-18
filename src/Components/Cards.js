@@ -12,12 +12,14 @@ const Cards=({state,product})=>{
     var setDataInstock=state.setDataInstock;
     // // console.log( dataInstock[product.sku]);
     // var item=dataInstock[product.sku];
-    // let sizes=["S","M","L","XL"];
+    var sizes=["S","M","L","XL"].filter((key) => {return stock[product.sku][key]>0});
     // let newstock=dataInstock
     // var a=stock[product.sku]
     // console.log( stock[product.sku]["S"]);
-    // console.log( dataInstock[product.sku][size]);
+    // console.log( sizes.length);
     // console.log(product);
+    // console.log((sizes.length));
+
 
 
 
@@ -46,7 +48,8 @@ const Cards=({state,product})=>{
 
             </Card.Content>
             <Button.Group>
-                {["S","M","L","XL"].filter((key) => {return stock[product.sku][key]>0}).map(size=>
+                { sizes.length >0 ?
+                    ["S","M","L","XL"].filter((key) => {return stock[product.sku][key]>0}).map(size=>
                     <Button onClick={() => {
                         // console.log( stock);
                         setShowShoppingcart(true);
@@ -54,14 +57,22 @@ const Cards=({state,product})=>{
                         if (index !==-1){
                             cartItems[index].count++;
                         }else{
+
                             cartItems.push({product: product,size:size,count:1});
                         }
-                        console.log( stock[product.sku][size]);
+                        // console.log( stock[product.sku][size]);
+                        let newstock=stock;
+                        newstock[product.sku][size]--;
+                        setDataInstock(newstock);
                         setCartItems(cartItems);
 
                     }}>
 
-                        {size}</Button>)}
+                        {size}</Button>):
+                <Button>
+                    OUT OF STOCK
+                </Button>
+                }
             </Button.Group>
 
         </Card>

@@ -5,11 +5,11 @@ import App from "../App";
 
 const CartCard = ({ product,size,count,state}) => {
 
-    var setShowShoppingcart=Object.values(state)[1];
-    var cartItems=Object.values(state)[2];
-    var setCartItems=Object.values(state)[3];
-    var stock=state.stock;
-    var setStock=state.setDataInstock;
+    const setShowShoppingcart=Object.values(state)[1];
+    const cartItems=Object.values(state)[2];
+    const setCartItems=Object.values(state)[3];
+    const stock=state.stock;
+    const setStock=state.setDataInstock;
     return (
         <Card>
             <Card.Content>
@@ -35,10 +35,14 @@ const CartCard = ({ product,size,count,state}) => {
                     // console.log()
                     let index=cartItems.findIndex((item)=>{return item.product === product && item.size === size});
                     let newStock=stock;
-                    console.log(newStock);
-                    cartItems[index].count++;
-                    newStock[product.sku][size]--;
-                    setStock(newStock);
+                    // console.log(newStock);
+                    if (newStock[product.sku][size]>0){
+                        cartItems[index].count++;
+                        newStock[product.sku][size]--;
+                        setStock(newStock);
+                    }else{
+                    }
+
 
 
                     setCartItems(cartItems.filter((cartItem) => {return cartItem.count>0}));}}>

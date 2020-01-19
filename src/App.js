@@ -1,82 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import 'rbx/index.css';
-import {Card,Column,Image,Content,Level,Divider,Button,Navbar,Media,Title} from 'rbx';
+import {Card,Column,Image,Content,Level,Divider,Button,Navbar,Media,Title,Message} from 'rbx';
 import Sidebar from "react-sidebar";
 import CartCard from './Components/CartCard'
 import Cards from './Components/Cards'
 import db from './Components/db'
-// const Cards=({state,product})=>{
-//     var setShowShoppingcart=state.setShowShoppingcart;
-//     var cartItems=state.cartItems;
-//     var setCartItems=state.setCartItems;
-//     // var stocks=Object.values(stock);
-//     // console.log(stock);
-//     var stock=state.stock;
-//     var setDataInstock=state.setDataInstock;
-//     // // console.log( dataInstock[product.sku]);
-//     // var item=dataInstock[product.sku];
-//     // let sizes=["S","M","L","XL"];
-//     // let newstock=dataInstock
-//     console.log( stock[product.sku]);
-//     // console.log( dataInstock[product.sku][size]);
-//     // console.log(product);
-//
-//
-//
-//     // sizes=sizes.filter((key) => {return item[key]>0})
-//
-//
-//     return(
-//         <Card key={product.sku}>
-//             <Card.Image>
-//                 <Image.Container >
-//                     <Image src={require('../public/data/products/'+product.sku+'_1.jpg')} />
-//                 </Image.Container>
-//             </Card.Image>
-//             <Card.Content>
-//                 <Content>
-//                     {product.title}
-//                     <Divider>
-//                         {product.price+'$'}
-//                     </Divider>
-//                     <Divider>
-//                         {product.description}
-//                     </Divider>
-//
-//
-//                 </Content>
-//
-//             </Card.Content>
-//             <Button.Group>
-//                 {["S","M","L","XL"].map(size=>
-//                     <Button onClick={() => {
-//                         console.log( stock);
-//                         setShowShoppingcart(true);
-//                         let index=cartItems.findIndex((item)=>{return item.product === product && item.size === size});
-//                         if (index !==-1){
-//                             cartItems[index].count++;
-//                         }else{
-//                             cartItems.push({product: product,size:size,count:1});
-//                         }
-//                         // console.log( dataInstock[product.sku][size]);
-//                         setCartItems(cartItems);
-//
-//                     }}>
-//
-//                         {size}</Button>)}
-//             </Button.Group>
-//
-//         </Card>
-//     )
-// }
+import firebase from 'firebase/app';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import 'firebase/auth';
+import 'firebase/database';
 
 
 const App = () => {
   const [data, setData] = useState({});
   const products = Object.values(data);
   const [dataInstock,setDataInstock]=useState({});
+    const Welcome = ({ user }) => (
+        <Message color="info">
+            <Message.Header>
+                Welcome, {user.displayName}
+                <Button primary onClick={() => firebase.auth().signOut()}>
+                    Log out
+                </Button>
+            </Message.Header>
+        </Message>
+    );
+    const SignIn = () => (
+        <StyledFirebaseAuth
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+        />
+    );
     const [showShoppingCart,setShowShoppingcart]=useState(false);
     const [cartItems,setCartItems]=useState([]);
+    const [user, setUser] = useState(null);
+    const uiConfig = {
+        signInFlow: 'popup',
+        signInOptions: [
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        ],
+        callbacks: {
+            signInSuccessWithAuthResult: () => false
+        }
+    };
+
     useEffect(() => {
         const handleData = snap => {
             if(snap.val()) setDataInstock(snap.val());
@@ -92,37 +59,26 @@ const App = () => {
             const jsonI = await responseI.json();
             setData(jsonI);
         };
-        // const fetchStock = async () => {
-        //             const response = await fetch('./data/inventory.json');
-        //             const json = await response.json();
-        //             setDataInstock(json);
-        //         };
-
         fetchProducts();
-        // fetchStock();
-
-
     }, []);
 
-
-  // useEffect(()=>{
-  //     const fetchStock = async () => {
-  //         const response = await fetch('./data/inventory.json');
-  //         const json = await response.json();
-  //         setDataInstock(json);
-  //     };
-  //     fetchStock();
-  // },[]);
-
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged(setUser);
+    }, []);
 
   return (
       <React.Fragment>
+
           <Navbar>
+
             <Navbar.Brand>
                 Nu-Shopping Cart
             </Navbar.Brand>
 
               <Navbar.Menu>
+                  <Navbar.Segment>
+                      { user ? <Welcome user={ user } /> : <SignIn /> }
+                  </Navbar.Segment>
                   <Navbar.Segment align="end">
                       <Button onClick={()=>{setShowShoppingcart(! showShoppingCart);
                       console.log(dataInstock)}}

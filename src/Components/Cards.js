@@ -3,12 +3,12 @@ import React from "react";
 
 
 const Cards=({state,product})=>{
-    var setShowShoppingcart=state.setShowShoppingcart;
-    var cartItems=state.cartItems;
-    var setCartItems=state.setCartItems;
+    const setShowShoppingcart=state.setShowShoppingcart;
+    const cartItems=state.cartItems;
+    const setCartItems=state.setCartItems;
 
-    var stock=state.stock;
-    var setDataInstock=state.setDataInstock;
+    const stock=state.stock;
+    const setDataInstock=state.setDataInstock;
 
     let sizes=["S","M","L","XL"].filter((key) => {
         if (!stock) return true;

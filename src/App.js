@@ -4,6 +4,7 @@ import {Card,Column,Image,Content,Level,Divider,Button,Navbar,Media,Title} from 
 import Sidebar from "react-sidebar";
 import CartCard from './Components/CartCard'
 import Cards from './Components/Cards'
+import db from './Components/db'
 // const Cards=({state,product})=>{
 //     var setShowShoppingcart=state.setShowShoppingcart;
 //     var cartItems=state.cartItems;
@@ -74,24 +75,35 @@ const App = () => {
   const [data, setData] = useState({});
   const products = Object.values(data);
   const [dataInstock,setDataInstock]=useState({});
-  // console.log(dataInstock['12064273040195392']);
-  //   const stock=Object.values(dataInstock);
+    const [showShoppingCart,setShowShoppingcart]=useState(false);
+    const [cartItems,setCartItems]=useState([]);
+    useEffect(() => {
+        const handleData = snap => {
+            if(snap.val()) setDataInstock(snap.val());
+        }
+        db.on('value', handleData, error => alert(error));
+        return () => { db.off('value', handleData); };
+    }, []);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch('./data/products.json');
-      const json = await response.json();
-      setData(json);
-    };
-      const fetchStock = async () => {
-          const response1 = await fetch('./data/inventory.json');
-          const json1 = await response1.json();
-          setDataInstock(json1);
-      };
-    fetchStock();
-    fetchProducts();
 
-  },[]);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const responseI = await fetch('./data/products.json');
+            const jsonI = await responseI.json();
+            setData(jsonI);
+        };
+        // const fetchStock = async () => {
+        //             const response = await fetch('./data/inventory.json');
+        //             const json = await response.json();
+        //             setDataInstock(json);
+        //         };
+
+        fetchProducts();
+        // fetchStock();
+
+
+    }, []);
+
 
   // useEffect(()=>{
   //     const fetchStock = async () => {
@@ -102,8 +114,7 @@ const App = () => {
   //     fetchStock();
   // },[]);
 
-    const [showShoppingCart,setShowShoppingcart]=useState(false);
-    const [cartItems,setCartItems]=useState([]);
+
   return (
       <React.Fragment>
           <Navbar>
@@ -114,7 +125,7 @@ const App = () => {
               <Navbar.Menu>
                   <Navbar.Segment align="end">
                       <Button onClick={()=>{setShowShoppingcart(! showShoppingCart);
-                      console.log(showShoppingCart)}}
+                      console.log(dataInstock)}}
                       >
                           🛒
                       </Button>

@@ -32,9 +32,10 @@ const CartCard = ({ product,size,count,state}) => {
                     </Media.Item>
                 </Media>
                 <Button onClick={() => {
-
+                    // console.log()
                     let index=cartItems.findIndex((item)=>{return item.product === product && item.size === size});
                     let newStock=stock;
+                    console.log(newStock);
                     cartItems[index].count++;
                     newStock[product.sku][size]--;
                     setStock(newStock);

@@ -15,6 +15,8 @@ const App = () => {
   const [data, setData] = useState({});
   const products = Object.values(data);
   const [dataInstock,setDataInstock]=useState({});
+    var total = 0.0;
+
     const Welcome = ({ user }) => (
         <Message color="info">
             <Message.Header>
@@ -31,9 +33,11 @@ const App = () => {
             firebaseAuth={firebase.auth()}
         />
     );
+
     const [showShoppingCart,setShowShoppingcart]=useState(false);
     const [cartItems,setCartItems]=useState([]);
     const [user, setUser] = useState(null);
+    cartItems.forEach((item) => {total += item.product.price * item.count})
     const uiConfig = {
         signInFlow: 'popup',
         signInOptions: [
@@ -65,7 +69,7 @@ const App = () => {
     useEffect(() => {
         firebase.auth().onAuthStateChanged(setUser);
     }, []);
-
+    console.log(user)
   return (
       <React.Fragment>
 
@@ -81,27 +85,41 @@ const App = () => {
                   </Navbar.Segment>
                   <Navbar.Segment align="end">
                       <Button onClick={()=>{setShowShoppingcart(! showShoppingCart);
-                      console.log(dataInstock)}}
+                      console.log(cartItems)}}
                       >
-                          🛒
+                          cart
                       </Button>
 
                   </Navbar.Segment>
               </Navbar.Menu>
           </Navbar>
-          <Sidebar open={showShoppingCart} pullRight={true} styles={{ sidebar: { background: "black" } }}
-          sidebar={cartItems.map((cartItem,index) =>(
+          <Sidebar open={showShoppingCart} pullRight={true} styles={{ sidebar: { background: "white" ,paddingTop:"50px",psoition:"fixed"} }} sidebar=
+              {<React.Fragment>
+                  <Message>
+                      <Message.Header>
+                          <p> total price</p>
+
+                      </Message.Header>
+                      <Message.Body>
+                          ${parseFloat(total).toFixed(2)}
+                      </Message.Body>
+                  </Message>
+
+              {cartItems.map((cartItem,index) =>(
               <Level>
-                  <CartCard key={index} product={cartItem.product} size={cartItem.size} count={cartItem.count} state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems,stock:dataInstock,setDataInstock:setDataInstock}}/>
+                  <CartCard key={index} product={cartItem.product} size={cartItem.size} count={cartItem.count} state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems,stock:dataInstock,setDataInstock:setDataInstock} } user={user}/>
               </Level>
-          ))}/>
+
+          ))}
+              </React.Fragment>
+              }/>
 
           <Column.Group  >
               {[1, 2, 3, 4,].map(i => (
                   <Column key={i}>
                       {products.slice(4*(i-1),4*i).map(product =>
                           <Level style={{display:"flex"}}>
-                              <Cards state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems,stock :dataInstock,setDataInstock :setDataInstock}} product={product} />
+                              <Cards state={{showShoppingCart,setShowShoppingcart,cartItems,setCartItems,stock :dataInstock,setDataInstock :setDataInstock}} product={product} user={user} />
                           </Level>
                       )}
                   </Column>

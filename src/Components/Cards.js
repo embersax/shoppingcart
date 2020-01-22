@@ -1,4 +1,4 @@
-import {Button, Card, Content, Divider, Image} from "rbx";
+import {Button, Card, Content, Divider, Image,Message} from "rbx";
 import React from "react";
 
 
@@ -25,19 +25,24 @@ const Cards=({state,product})=>{
             </Card.Image>
             <Card.Content>
                 <Content>
-                    {product.title}
+                    <Message color="primary">
+                        <Message.Header>
+                            {product.title}
+                        </Message.Header>
+                        <Message.Body>
                     <Divider>
                         {product.price+'$'}
                     </Divider>
                     <Divider>
                         {product.description}
                     </Divider>
-
+                        </Message.Body>
+                    </Message>
 
                 </Content>
 
             </Card.Content>
-            <Button.Group>
+            <Button.Group align="centered" >
                 { sizes.length >0 ?
 
                     sizes.map(size=>

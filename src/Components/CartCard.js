@@ -1,9 +1,9 @@
 import {Card, Image, Media, Title,Button} from "rbx";
 import React from "react";
 import App from "../App";
+import db from '../Components/db'
 
-
-const CartCard = ({ product,size,count,state}) => {
+const CartCard = ({ product,size,count,state,user}) => {
 
     const setShowShoppingcart=Object.values(state)[1];
     const cartItems=Object.values(state)[2];
@@ -11,7 +11,7 @@ const CartCard = ({ product,size,count,state}) => {
     const stock=state.stock;
     const setStock=state.setDataInstock;
     return (
-        <Card>
+        <Card style={{width:"475px", height:"200px"}}>
             <Card.Content>
                 <Media>
                     <Media.Item as="figure" align="left">
@@ -42,6 +42,11 @@ const CartCard = ({ product,size,count,state}) => {
                         setStock(newStock);
                     }else{
                     }
+                    if (user) {
+                        db.child('carts').child(user.uid).set(cartItems)
+                            .catch(error => alert(error));
+                    }
+                    console.log(user);
 
 
 
@@ -55,7 +60,16 @@ const CartCard = ({ product,size,count,state}) => {
                     cartItems[index].count=0;
                     console.log(cartItems)
 
-                    setCartItems(cartItems.filter((cartItem) => {return cartItem.count>0}));}}>
+                    setCartItems(cartItems.filter((cartItem) => {return cartItem.count>0}));
+                    if (user) {
+                        db.child('carts').child(user.uid).set(cartItems)
+                            .catch(error => alert(error));
+                    }
+
+
+
+
+                }}>
                     Remove Items
                 </Button>
             </Card.Content>

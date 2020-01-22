@@ -39,14 +39,18 @@ const CartCard = ({ product,size,count,state,user}) => {
                     if (newStock[product.sku][size]>0){
                         cartItems[index].count++;
                         newStock[product.sku][size]--;
+                        if (user) {
+                            db.child('carts').child(user.uid).set(cartItems)
+                                .catch(error => alert(error));
+                        }
+                        else{
+                        }
                         setStock(newStock);
+                        console.log(newStock)
                     }else{
                     }
-                    if (user) {
-                        db.child('carts').child(user.uid).set(cartItems)
-                            .catch(error => alert(error));
-                    }
-                    console.log(user);
+
+
 
 
 
@@ -58,12 +62,14 @@ const CartCard = ({ product,size,count,state,user}) => {
                     let index=cartItems.findIndex((item)=>{return item.product === product && item.size === size});
 
                     cartItems[index].count=0;
-                    console.log(cartItems)
+
 
                     setCartItems(cartItems.filter((cartItem) => {return cartItem.count>0}));
                     if (user) {
                         db.child('carts').child(user.uid).set(cartItems)
                             .catch(error => alert(error));
+                    }
+                    else{
                     }
 
 
